@@ -1,9 +1,12 @@
 import { Container, Text, VStack, Heading, Box, Button, Input, Textarea } from "@chakra-ui/react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Index = () => {
+const Index = ({ auth }) => {
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState({ title: "", content: "" });
+
+  const navigate = useNavigate();
 
   const handlePostChange = (e) => {
     const { name, value } = e.target;
@@ -17,9 +20,14 @@ const Index = () => {
     }
   };
 
+  if (!auth) {
+    navigate("/login");
+    return null;
+  }
+
   return (
     <Container centerContent maxW="container.md" py={8}>
-      <VStack spacing={8} width="100%">
+      <VStack spacing={8} width="100%" align="stretch">
         <Heading as="h1" size="2xl">Tech Forum</Heading>
         <Box width="100%" p={4} borderWidth="1px" borderRadius="lg">
           <VStack spacing={4} width="100%" align="stretch">
