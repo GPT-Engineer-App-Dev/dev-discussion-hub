@@ -1,17 +1,53 @@
-// Update this page (the content is just a fallback if you fail and example)
-// Use chakra-ui
-import { Container, Text, VStack } from "@chakra-ui/react";
-
-// Example of using react-icons
-// import { FaRocket } from "react-icons/fa";
-// <IconButton aria-label="Add" icon={<FaRocket />} size="lg" />; // IconButton would also have to be imported from chakra
+import { Container, Text, VStack, Heading, Box, Button, Input, Textarea } from "@chakra-ui/react";
+import { useState } from "react";
 
 const Index = () => {
+  const [posts, setPosts] = useState([]);
+  const [newPost, setNewPost] = useState({ title: "", content: "" });
+
+  const handlePostChange = (e) => {
+    const { name, value } = e.target;
+    setNewPost({ ...newPost, [name]: value });
+  };
+
+  const handlePostSubmit = () => {
+    if (newPost.title && newPost.content) {
+      setPosts([...posts, newPost]);
+      setNewPost({ title: "", content: "" });
+    }
+  };
+
   return (
-    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-      <VStack spacing={4}>
-        <Text fontSize="2xl">Your Blank Canvas</Text>
-        <Text>Chat with the agent to start making edits.</Text>
+    <Container centerContent maxW="container.md" py={8}>
+      <VStack spacing={8} width="100%">
+        <Heading as="h1" size="2xl">Tech Forum</Heading>
+        <Box width="100%" p={4} borderWidth="1px" borderRadius="lg">
+          <VStack spacing={4} width="100%" align="stretch">
+            <Heading as="h2" size="lg">Create a New Post</Heading>
+            <Input
+              placeholder="Post Title"
+              name="title"
+              value={newPost.title}
+              onChange={handlePostChange}
+            />
+            <Textarea
+              placeholder="Post Content"
+              name="content"
+              value={newPost.content}
+              onChange={handlePostChange}
+            />
+            <Button colorScheme="blue" onClick={handlePostSubmit}>Submit Post</Button>
+          </VStack>
+        </Box>
+        <VStack spacing={8} width="100%" align="stretch">
+          <Heading as="h2" size="lg">Latest Posts</Heading>
+          {posts.map((post, index) => (
+            <Box key={index} p={4} borderWidth="1px" borderRadius="lg">
+              <Heading as="h3" size="md">{post.title}</Heading>
+              <Text mt={2}>{post.content}</Text>
+            </Box>
+          ))}
+        </VStack>
       </VStack>
     </Container>
   );
